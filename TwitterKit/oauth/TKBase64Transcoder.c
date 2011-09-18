@@ -101,23 +101,23 @@ const u_int8_t kBits_11000000 = 0xC0;
 const u_int8_t kBits_11110000 = 0xF0;
 const u_int8_t kBits_11111100 = 0xFC;
 
-size_t tk_EstimateBas64EncodedDataSize(size_t inDataSize)
+size_t TKEstimateBas64EncodedDataSize(size_t inDataSize)
 {
 size_t theEncodedDataSize = (int)ceil(inDataSize / 3.0) * 4;
 theEncodedDataSize = theEncodedDataSize / 72 * 74 + theEncodedDataSize % 72;
 return(theEncodedDataSize);
 }
 
-size_t tk_EstimateBas64DecodedDataSize(size_t inDataSize)
+size_t TKEstimateBas64DecodedDataSize(size_t inDataSize)
 {
 size_t theDecodedDataSize = (int)ceil(inDataSize / 4.0) * 3;
 //theDecodedDataSize = theDecodedDataSize / 72 * 74 + theDecodedDataSize % 72;
 return(theDecodedDataSize);
 }
 
-bool tk_Base64EncodeData(const void *inInputData, size_t inInputDataSize, char *outOutputData, size_t *ioOutputDataSize)
+bool TKBase64EncodeData(const void *inInputData, size_t inInputDataSize, char *outOutputData, size_t *ioOutputDataSize)
 {
-size_t theEncodedDataSize = tk_EstimateBas64EncodedDataSize(inInputDataSize);
+size_t theEncodedDataSize = TKEstimateBas64EncodedDataSize(inInputDataSize);
 if (*ioOutputDataSize < theEncodedDataSize)
 	return(false);
 *ioOutputDataSize = theEncodedDataSize;
@@ -163,11 +163,11 @@ else if (theRemainingBytes == 2)
 return(true);
 }
 
-bool tk_Base64DecodeData(const void *inInputData, size_t inInputDataSize, void *ioOutputData, size_t *ioOutputDataSize)
+bool TKBase64DecodeData(const void *inInputData, size_t inInputDataSize, void *ioOutputData, size_t *ioOutputDataSize)
 {
 memset(ioOutputData, '.', *ioOutputDataSize);
 
-size_t theDecodedDataSize = tk_EstimateBas64DecodedDataSize(inInputDataSize);
+size_t theDecodedDataSize = TKEstimateBas64DecodedDataSize(inInputDataSize);
 if (*ioOutputDataSize < theDecodedDataSize)
 	return(false);
 *ioOutputDataSize = 0;
