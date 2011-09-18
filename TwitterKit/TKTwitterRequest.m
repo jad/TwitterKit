@@ -13,11 +13,11 @@
 #pragma mark - NSURL private category
 
 @interface NSURL (TKTwitterRequestPrivateHelpers)
-- (NSURL *)_URLByAppendingGetParameters:(NSDictionary *)params;
+- (NSURL *)_URLByAppendingGETParameters:(NSDictionary *)params;
 @end
 
 @implementation NSURL (TKTwitterRequestPrivateHelpers)
-- (NSURL *)_URLByAppendingGetParameters:(NSDictionary *)params
+- (NSURL *)_URLByAppendingGETParameters:(NSDictionary *)params
 {
     NSMutableString *s =
         [NSMutableString stringWithString:[self absoluteString]];
@@ -121,24 +121,29 @@ static NSMutableDictionary *classOAuthCredentials_ = nil;
 - (NSURL *)finalURLWithParameters:(NSDictionary *)parameters
 {
     NSURL *url = [self url];
-    if ([self requestMethod] == TKRequestMethodGET)
-        url = [url _URLByAppendingGetParameters:[self parameters]];
+
+    TKRequestMethod method = [self requestMethod];
+    // Note that if the request method is DELETE, Twitter will report a
+    // "Could not authenticate with OAuth" error unless the parameters are
+    // passed along as the query string.
+    if (method == TKRequestMethodGET || method == TKRequestMethodDELETE)
+        url = [url _URLByAppendingGETParameters:[self parameters]];
 
     return url;
 }
 
 - (NSMutableURLRequest *)mutableRequestForParameters:(NSDictionary *)parameters
 {
-    TKRequestMethod requestMethod = [self requestMethod];
+    TKRequestMethod method = [self requestMethod];
     NSURL *url = [self finalURLWithParameters:[self parameters]];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    if (requestMethod == TKRequestMethodPOST) {
+    if (method == TKRequestMethodPOST) {
         NSString *bodyString = [[self parameters] tk_URLParameterString];
         NSData *body = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
         [request setHTTPBody:body];
     }
-    [request setHTTPMethod:[NSString stringForRequestMethod:requestMethod]];
+    [request setHTTPMethod:[NSString stringForRequestMethod:method]];
 
     return request;
 }
