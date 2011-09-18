@@ -26,8 +26,14 @@
 
 #pragma mark - Getting a signed request
 
-- (NSURLRequest *)signedRequestForURL:(NSURL *)url
-                           parameters:(NSDictionary *)parameters
-                        requestMethod:(TKRequestMethod)requestMethod;
+//- (NSURLRequest *)signedRequestForURL:(NSURL *)url
+//                           parameters:(NSDictionary *)parameters
+//                        requestMethod:(TKRequestMethod)requestMethod;
+
+#pragma mark - Obtaining the authorization request header
+
+- (NSString *)authorizationRequestHeaderForMethod:(TKRequestMethod)requestMethod
+                                              url:(NSURL *)url
+                                       parameters:(NSDictionary *)parameters;
 
 @end

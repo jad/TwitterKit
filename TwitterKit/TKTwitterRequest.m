@@ -13,11 +13,11 @@
 #pragma mark - NSURL private category
 
 @interface NSURL (TKTwitterRequestPrivateHelpers)
-- (NSURL *)URLByAppendingGetParameters:(NSDictionary *)params;
+- (NSURL *)_URLByAppendingGetParameters:(NSDictionary *)params;
 @end
 
 @implementation NSURL (TKTwitterRequestPrivateHelpers)
-- (NSURL *)URLByAppendingGetParameters:(NSDictionary *)params
+- (NSURL *)_URLByAppendingGetParameters:(NSDictionary *)params
 {
     NSMutableString *s =
         [NSMutableString stringWithString:[self absoluteString]];
@@ -43,13 +43,10 @@ static NSMutableDictionary *classOAuthCredentials_ = nil;
 @property (nonatomic, copy) NSString *consumerKey;
 @property (nonatomic, copy) NSString *consumerSecret;
 
-@property (nonatomic, copy, readonly) NSURL *fullUrl;
+#pragma mark - Request helpers
 
-@property (nonatomic, retain) NSURLConnection *connection;
-@property (nonatomic, retain) NSHTTPURLResponse *connectionResponse;
-@property (nonatomic, retain) NSMutableData *connectionData;
-@property (nonatomic, retain) NSError *connectionError;
-@property (nonatomic, copy) TKRequestHandler requestHandler;
+- (void)performRequest:(NSURLRequest *)request
+               handler:(TKRequestHandler)handler;
 @end
 
 @implementation TKTwitterRequest
@@ -60,14 +57,6 @@ static NSMutableDictionary *classOAuthCredentials_ = nil;
 
 @synthesize consumerKey = consumerKey_;
 @synthesize consumerSecret = consumerSecret_;
-
-@synthesize fullUrl = fullUrl_;
-
-@synthesize connection = connection_;
-@synthesize connectionResponse = connectionResponse_;
-@synthesize connectionData = connectionData_;
-@synthesize connectionError = connectionError_;
-@synthesize requestHandler = requestHandler_;
 
 #pragma mark - Configuration
 
@@ -100,15 +89,6 @@ static NSMutableDictionary *classOAuthCredentials_ = nil;
     [consumerKey_ release];
     [consumerSecret_ release];
 
-    [fullUrl_ release];
-
-    [connection_ cancel];
-    [connection_ release];
-    [connectionResponse_ release];
-    [connectionData_ release];
-    [connectionError_ release];
-    [requestHandler_ release];
-
     [super dealloc];
 }
 
@@ -136,7 +116,32 @@ static NSMutableDictionary *classOAuthCredentials_ = nil;
     [self setConsumerSecret:secret];
 }
 
-#pragma mark - Getting a signed request
+#pragma mark - Getting an NSURLRequest
+
+- (NSURL *)finalURLWithParameters:(NSDictionary *)parameters
+{
+    NSURL *url = [self url];
+    if ([self requestMethod] == TKRequestMethodGET)
+        url = [url _URLByAppendingGetParameters:[self parameters]];
+
+    return url;
+}
+
+- (NSMutableURLRequest *)mutableRequestForParameters:(NSDictionary *)parameters
+{
+    TKRequestMethod requestMethod = [self requestMethod];
+    NSURL *url = [self finalURLWithParameters:[self parameters]];
+
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    if (requestMethod == TKRequestMethodPOST) {
+        NSString *bodyString = [[self parameters] tk_URLParameterString];
+        NSData *body = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+        [request setHTTPBody:body];
+    }
+    [request setHTTPMethod:[NSString stringForRequestMethod:requestMethod]];
+
+    return request;
+}
 
 - (NSURLRequest *)signedRequestWithOAuthToken:(NSString *)token
                                   tokenSecret:(NSString *)tokenSecret
@@ -148,36 +153,52 @@ static NSMutableDictionary *classOAuthCredentials_ = nil;
         [self consumerSecret] ?
         [self consumerSecret] : [[self class] defaultConsumerSecret];
 
+    NSMutableDictionary *params =
+        [NSMutableDictionary dictionaryWithDictionary:[self parameters]];
+    [params setObject:token forKey:@"oauth_token"];
+
+    NSMutableURLRequest *request = [self mutableRequestForParameters:params];
+
     TKTwitterOAuthSignature *sig =
         [[TKTwitterOAuthSignature alloc] initWithConsumerKey:consumerKey
                                               consumerSecret:consumerSecret
                                                        token:token
                                                  tokenSecret:tokenSecret];
-    NSURLRequest *req = [sig signedRequestForURL:[self fullUrl]
-                                      parameters:[self parameters]
-                                   requestMethod:[self requestMethod]];
+    NSString *header =
+        [sig authorizationRequestHeaderForMethod:[self requestMethod]
+                                             url:[request URL]
+                                      parameters:params];
+    [request addValue:header forHTTPHeaderField:@"Authorization"];
     [sig release], sig = nil;
 
-    return req;
+    return request;
+}
+
+- (NSURLRequest *)unsignedRequest
+{
+    return [self mutableRequestForParameters:[self parameters]];
 }
 
 #pragma mark - Sending the request
 
-- (void)performRequestWithHandler:(TKRequestHandler)handler
+- (void)performUnsignedRequestWithHandler:(TKRequestHandler)handler
 {
-    NSAssert2(0, @"%@: %@ - Not implemented.",
-              NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+    [self performRequest:[self unsignedRequest] handler:handler];
 }
 
 - (void)performSignedRequestWithOAuthToken:(NSString *)token
                                tokenSecret:(NSString *)tokenSecret
                                    handler:(TKRequestHandler)handler
 {
-    [self setRequestHandler:handler];
-
     NSURLRequest *request = [self signedRequestWithOAuthToken:token
                                                   tokenSecret:tokenSecret];
+    [self performRequest:request handler:handler];
+}
 
+#pragma mark - Request helpers
+
+- (void)performRequest:(NSURLRequest *)request handler:(TKRequestHandler)handler
+{
     dispatch_queue_t async_queue =
         dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_queue_t current_queue = dispatch_get_current_queue();
@@ -191,78 +212,6 @@ static NSMutableDictionary *classOAuthCredentials_ = nil;
             handler(httpResponse, data, error);
         });
     });
-
-
-    /*
-    NSURLConnection *connection = [NSURLConnection connectionWithRequest:request
-                                                                delegate:self];
-    [self setConnection:connection];
-     */
-}
-
-#pragma mark - Connection events
-
-- (void)processConnectionCompleted
-{
-    NSHTTPURLResponse *response = [self connectionResponse];
-    NSData *data = [self connectionData];
-    NSError *error = [self connectionError];
-
-    [self requestHandler](response, data, error);
-
-    [self setConnectionResponse:nil];
-    [self setConnectionData:nil];
-    [self setConnectionError:nil];
-    [self setConnection:nil];
-}
-
-#pragma mark - NSURLConnectionDelegate implementation
-
-- (void)connection:(NSURLConnection *)connection
-didReceiveResponse:(NSURLResponse *)response
-{
-    [self setConnectionResponse:(NSHTTPURLResponse *) response];
-    [self setConnectionData:[NSMutableData data]];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    [[self connectionData] appendData:data];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    [self processConnectionCompleted];
-}
-
-- (void)connection:(NSURLConnection *)connection
-  didFailWithError:(NSError *)error
-{
-    [self setConnectionError:error];
-    [self processConnectionCompleted];
-}
-
-#pragma mark - Accessors
-
-- (NSURL *)fullUrl
-{
-    if (!fullUrl_) {
-        switch ([self requestMethod]) {
-            case TKRequestMethodGET:
-                fullUrl_ =
-                    [[self url] URLByAppendingGetParameters:[self parameters]];
-                break;
-            case TKRequestMethodPOST:
-                fullUrl_ = [self url];
-                break;
-            default:
-                NSAssert1(NO, @"Unknown request method: %d",
-                          [self requestMethod]);
-                break;
-        }
-    }
-
-    return fullUrl_;
 }
 
 @end

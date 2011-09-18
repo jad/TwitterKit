@@ -48,7 +48,7 @@ typedef void(^TKRequestHandler)(NSHTTPURLResponse *response,
 
 #pragma mark - Sending the request
 
-- (void)performRequestWithHandler:(TKRequestHandler)handler;
+- (void)performUnsignedRequestWithHandler:(TKRequestHandler)handler;
 - (void)performSignedRequestWithOAuthToken:(NSString *)token
                                tokenSecret:(NSString *)tokenSecret
                                    handler:(TKRequestHandler)handler;

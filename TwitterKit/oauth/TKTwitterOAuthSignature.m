@@ -17,10 +17,6 @@ static NSString *OAUTH_VERSION = @"1.0";
 
 @interface TKTwitterOAuthSignature ()
 
-- (NSString *)oauthHeaderForMethod:(NSString *)method
-                            andUrl:(NSURL *)url
-                         andParams:(NSDictionary *)params;
-
 - (NSString *)oauthSignatureBase:(NSString *)httpMethod
                          withUrl:(NSURL *)url
               andOauthComponents:(NSDictionary *)parts;
@@ -66,49 +62,21 @@ static NSString *OAUTH_VERSION = @"1.0";
     return self;
 }
 
-#pragma mark - Getting a signed request
+#pragma mark - Obtaining the authorization request header
 
-- (NSURLRequest *)signedRequestForURL:(NSURL *)url
-                           parameters:(NSDictionary *)parameters
-                        requestMethod:(TKRequestMethod)requestMethod
-{
-    NSString *requestMethodString =
-        [NSString stringForRequestMethod:requestMethod];
-
-    NSMutableDictionary *params =
-        [NSMutableDictionary dictionaryWithDictionary:parameters];
-    [params setObject:[self token] forKey:@"oauth_token"];
-
-    NSString *header = [self oauthHeaderForMethod:requestMethodString
-                                           andUrl:url
-                                        andParams:params];
-
-    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
-    [req setHTTPMethod:requestMethodString];
-    if (requestMethod == TKRequestMethodPOST) {
-        NSString *bodyString = [parameters tk_URLParameterString];
-        [req setHTTPBody:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
-    }
-    [req addValue:header forHTTPHeaderField:@"Authorization"];
-
-    return req;
-}
-
-#pragma mark - Helper methods
-
-- (NSString *)oauthHeaderForMethod:(NSString *)method
-                            andUrl:(NSURL *)url
-                         andParams:(NSDictionary *)params
+- (NSString *)authorizationRequestHeaderForMethod:(TKRequestMethod)requestMethod
+                                              url:(NSURL *)url
+                                       parameters:(NSDictionary *)parameters
 {
 	TKOAHMACSHA1SignatureProvider *sigProvider =
         [[[TKOAHMACSHA1SignatureProvider alloc] init] autorelease];
 
 	// If there were any params, URLencode them.
     NSMutableDictionary *encodedParams =
-        [NSMutableDictionary dictionaryWithCapacity:[params count]];
-	if (params)
-		for (NSString *key in [params allKeys]) {
-            NSString *val = [params objectForKey:key];
+        [NSMutableDictionary dictionaryWithCapacity:[parameters count]];
+	if (parameters)
+		for (NSString *key in [parameters allKeys]) {
+            NSString *val = [parameters objectForKey:key];
 			[encodedParams setObject:[val tk_encodedURLParameterString]
                               forKey:key];
 		}
@@ -116,6 +84,8 @@ static NSString *OAUTH_VERSION = @"1.0";
     NSString *secret =
         [NSString stringWithFormat:@"%@&%@",
          [self consumerSecret], [self tokenSecret]];
+
+    NSString *method = [NSString stringForRequestMethod:requestMethod];
 
 	// Given a signature base and secret key, calculate the signature.
     NSDictionary *components = [self oauthComponentsForParams:encodedParams];
@@ -130,6 +100,8 @@ static NSString *OAUTH_VERSION = @"1.0";
 	return [self oauthAuthorizationHeader:signature
                       withOauthComponents:components];
 }
+
+#pragma mark - Helper methods
 
 - (NSString *)oauthSignatureBase:(NSString *)httpMethod
                          withUrl:(NSURL *)url
