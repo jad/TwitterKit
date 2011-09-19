@@ -1,5 +1,5 @@
 //
-//  TwitterOAuthService.h
+//  TKTwitterWebFlowAuthenticator.h
 //  Twitbit
 //
 //  Created by John Debay on 7/16/11.
@@ -11,7 +11,7 @@
 typedef void(^TKTokenCompletion)(NSString *urlQueryString, NSError *error);
 typedef void(^TKCredentialsCompletion)(NSDictionary *creds, NSError *error);
 
-@interface TKTwitterOAuthAuthenticator : NSObject
+@interface TKTwitterWebFlowAuthenticator : NSObject
 
 @property (nonatomic, copy, readonly) NSString *consumerKey;
 @property (nonatomic, copy, readonly) NSString *consumerSecret;

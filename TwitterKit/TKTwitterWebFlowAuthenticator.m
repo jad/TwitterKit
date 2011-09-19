@@ -1,12 +1,12 @@
 //
-//  TwitterOAuthService.m
+//  TKTwitterWebFlowAuthenticator.m
 //  Twitbit
 //
 //  Created by John Debay on 7/16/11.
 //  Copyright 2011 High Order Bit. All rights reserved.
 //
 
-#import "TKTwitterOAuthAuthenticator.h"
+#import "TKTwitterWebFlowAuthenticator.h"
 
 #import "TKOAHMACSHA1SignatureProvider.h"
 #import "NSString+TKOAURLEncodingAdditions.h"
@@ -20,7 +20,7 @@ static NSString *OAUTH_SIGNATURE_METHOD = @"HMAC-SHA1";
 static NSString *OAUTH_VERSION = @"1.0";
 
 
-@interface TKTwitterOAuthAuthenticator ()
+@interface TKTwitterWebFlowAuthenticator ()
 
 - (NSDictionary *)oauthComponentsForParams:(NSDictionary *)params;
 
@@ -42,7 +42,7 @@ static NSString *OAUTH_VERSION = @"1.0";
 @end
 
 
-@implementation TKTwitterOAuthAuthenticator
+@implementation TKTwitterWebFlowAuthenticator
 
 @synthesize consumerKey = consumerKey_;
 @synthesize consumerSecret = consumerSecret_;
