@@ -36,7 +36,7 @@
                                                                             NULL,                   // characters to leave unescaped (NULL = all escaped sequences are replaced)
                                                                             CFSTR("?=&+"),          // legal URL characters to be escaped (NULL = all legal characters are replaced)
                                                                             kCFStringEncodingUTF8); // encoding
-	return result;
+	return [result autorelease];
 }
 
 - (NSString *)tk_encodedURLParameterString
@@ -46,7 +46,7 @@
                                                                             NULL,
                                                                             CFSTR(":/=,!$&'()*+;[]@#?"),
                                                                             kCFStringEncodingUTF8);
-	return result;
+	return [result autorelease];
 }
 
 - (NSString *)tk_decodedURLString
@@ -55,7 +55,7 @@
                                                                                             (CFStringRef) self,
                                                                                             CFSTR(""),
                                                                                             kCFStringEncodingUTF8);
-	return result;
+	return [result autorelease];
 	
 }
 
