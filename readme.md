@@ -199,7 +199,7 @@ TwitterKit relies on components from other open source OAuth and Twitter librari
 * [__PlainOAuth__](https://github.com/jaanus/PlainOAuth/) -- Much of the OAuth web flow support was inspired by this library. I did borrow some of the base crypto classes from here, though those classes are part of most Objective-C OAuth-related libraries I've encountered.
 
 # Contributing
-Any and all contributions in any form are welcome. Please feel free to [file a bug](******) if you find one, or (better!), fix the bug and submit a pull request. If you just think part of the design sucks and have a suggestion for improvement, that's great! Please get in touch.
+Any and all contributions in any form are welcome. Please feel free to [file a bug](https://github.com/jad/TwitterKit/issues) if you find one, or (better!), fix the bug and submit a pull request. If you just think part of the design sucks and have a suggestion for improvement, that's great! Please get in touch.
 
 # License
 TwitterKit is made available under the MIT license. See the "LICENSE" file included in this project for more information. In cases where I've imported code from other libraries, I've left their original license agreement in place.
