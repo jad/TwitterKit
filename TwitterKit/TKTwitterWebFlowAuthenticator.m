@@ -72,8 +72,8 @@ static NSString *OAUTH_VERSION = @"1.0";
 
 #pragma mark - Fetching the token
 
-- (void)fetchTwitterTokenWithCallbackURL:(NSURL *)callbackURL
-                              completion:(TKTokenCompletion)tokenCompletion
+- (void)fetchTwitterAccessTokenWithCallbackURL:(NSURL *)callbackURL
+                                    completion:(TKTokenCompletion)completion
 {
     NSURL *url = [[self class] twitterTokenURL];
     NSDictionary *params =
@@ -105,7 +105,7 @@ static NSString *OAUTH_VERSION = @"1.0";
              // the message I'm putting here, whether or not it's actually true.
              error = [NSError tk_twitterOvercapacityError];
 
-         tokenCompletion(token, error);
+         completion(token, error);
      }];
 }
 

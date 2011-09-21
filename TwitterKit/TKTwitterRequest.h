@@ -43,14 +43,15 @@ typedef void(^TKRequestHandler)(NSHTTPURLResponse *response,
 
 #pragma mark - Getting a signed request
 
+- (NSURLRequest *)unsignedRequest;
 - (NSURLRequest *)signedRequestWithOAuthToken:(NSString *)token
                                   tokenSecret:(NSString *)tokenSecret;
 
 #pragma mark - Sending the request
 
-- (void)performUnsignedRequestWithHandler:(TKRequestHandler)handler;
+- (void)performUnsignedRequestWithCompletion:(TKRequestHandler)completion;
 - (void)performSignedRequestWithOAuthToken:(NSString *)token
                                tokenSecret:(NSString *)tokenSecret
-                                   handler:(TKRequestHandler)handler;
+                                completion:(TKRequestHandler)completion;
 
 @end

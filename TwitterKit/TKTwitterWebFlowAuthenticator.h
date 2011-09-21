@@ -22,8 +22,8 @@ typedef void(^TKCredentialsCompletion)(NSDictionary *creds, NSError *error);
 
 #pragma mark - Fetching the token
 
-- (void)fetchTwitterTokenWithCallbackURL:(NSURL *)callbackURL
-                              completion:(TKTokenCompletion)completion;
+- (void)fetchTwitterAccessTokenWithCallbackURL:(NSURL *)callbackURL
+                                    completion:(TKTokenCompletion)completion;
 
 #pragma mark - Authorizing the token
 

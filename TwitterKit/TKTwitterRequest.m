@@ -43,8 +43,10 @@ static NSMutableDictionary *classOAuthCredentials_ = nil;
 @property (nonatomic, copy) NSString *consumerKey;
 @property (nonatomic, copy) NSString *consumerSecret;
 
-#pragma mark - Request helpers
+#pragma mark - Private implementation
 
+- (NSURL *)finalURLWithParameters:(NSDictionary *)parameters;
+- (NSMutableURLRequest *)mutableRequestForParameters:(NSDictionary *)parameters;
 - (void)performRequest:(NSURLRequest *)request
                handler:(TKRequestHandler)handler;
 @end
@@ -118,34 +120,9 @@ static NSMutableDictionary *classOAuthCredentials_ = nil;
 
 #pragma mark - Getting an NSURLRequest
 
-- (NSURL *)finalURLWithParameters:(NSDictionary *)parameters
+- (NSURLRequest *)unsignedRequest
 {
-    NSURL *url = [self url];
-
-    TKRequestMethod method = [self requestMethod];
-    // Note that if the request method is DELETE, Twitter will report a
-    // "Could not authenticate with OAuth" error unless the parameters are
-    // passed along as the query string.
-    if (method == TKRequestMethodGET || method == TKRequestMethodDELETE)
-        url = [url _URLByAppendingGETParameters:[self parameters]];
-
-    return url;
-}
-
-- (NSMutableURLRequest *)mutableRequestForParameters:(NSDictionary *)parameters
-{
-    TKRequestMethod method = [self requestMethod];
-    NSURL *url = [self finalURLWithParameters:[self parameters]];
-
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    if (method == TKRequestMethodPOST) {
-        NSString *bodyString = [[self parameters] tk_URLParameterString];
-        NSData *body = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
-        [request setHTTPBody:body];
-    }
-    [request setHTTPMethod:[NSString stringForRequestMethod:method]];
-
-    return request;
+    return [self mutableRequestForParameters:[self parameters]];
 }
 
 - (NSURLRequest *)signedRequestWithOAuthToken:(NSString *)token
@@ -179,28 +156,53 @@ static NSMutableDictionary *classOAuthCredentials_ = nil;
     return request;
 }
 
-- (NSURLRequest *)unsignedRequest
-{
-    return [self mutableRequestForParameters:[self parameters]];
-}
-
 #pragma mark - Sending the request
 
-- (void)performUnsignedRequestWithHandler:(TKRequestHandler)handler
+- (void)performUnsignedRequestWithCompletion:(TKRequestHandler)handler
 {
     [self performRequest:[self unsignedRequest] handler:handler];
 }
 
 - (void)performSignedRequestWithOAuthToken:(NSString *)token
                                tokenSecret:(NSString *)tokenSecret
-                                   handler:(TKRequestHandler)handler
+                                completion:(TKRequestHandler)handler
 {
     NSURLRequest *request = [self signedRequestWithOAuthToken:token
                                                   tokenSecret:tokenSecret];
     [self performRequest:request handler:handler];
 }
 
-#pragma mark - Request helpers
+#pragma mark - Private implementation
+
+- (NSURL *)finalURLWithParameters:(NSDictionary *)parameters
+{
+    NSURL *url = [self url];
+
+    TKRequestMethod method = [self requestMethod];
+    // Note that if the request method is DELETE, Twitter will report a
+    // "Could not authenticate with OAuth" error unless the parameters are
+    // passed along as the query string.
+    if (method == TKRequestMethodGET || method == TKRequestMethodDELETE)
+        url = [url _URLByAppendingGETParameters:[self parameters]];
+
+    return url;
+}
+
+- (NSMutableURLRequest *)mutableRequestForParameters:(NSDictionary *)parameters
+{
+    TKRequestMethod method = [self requestMethod];
+    NSURL *url = [self finalURLWithParameters:[self parameters]];
+
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    if (method == TKRequestMethodPOST) {
+        NSString *bodyString = [[self parameters] tk_URLParameterString];
+        NSData *body = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+        [request setHTTPBody:body];
+    }
+    [request setHTTPMethod:[NSString stringForRequestMethod:method]];
+
+    return request;
+}
 
 - (void)performRequest:(NSURLRequest *)request handler:(TKRequestHandler)handler
 {
