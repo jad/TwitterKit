@@ -1,10 +1,10 @@
-# TWITTERKIT
+# TwitterKit
 TwitterKit is a lightweight Cocoa library for authenticating and communicating with the [Twitter REST API](https://dev.twitter.com/docs/api). The design draws from Apple's API for communicating with Twitter in iOS 5.
 
-# REQUIREMENTS
+# Requirements
 TwitterKit is compatible with __iOS 4.0 and higher__. It should also work on __Mac OS X 10.6 and higher__, but I haven't tested it myself.
 
-# QUICK START
+# Quick Start
 Here's a simple example for fetching a user's timeline. This assumes you've already gone through the steps to authenticate the user, so you already have her OAuth token and token secret.
 
 ```
@@ -31,7 +31,7 @@ TKTwitterRequest *request = [[TKTwitterRequest alloc] initWithURL:url
     }];
 ```
 
-# AUTHENTICATING
+# Authenticating
 ## OAuth Web Flow
 Authentication is performed via the OAuth web flow using the `TKTwitterWebFlowAuthenticator` class. (This class does not support Twitter's PIN-based workflow, but I don't think any mobile/desktop apps use that anymore. Feel free to let me know if that assumption is incorrect.)
 
@@ -85,7 +85,7 @@ The `credentials` dictionary contains the user's user ID and screen name, as wel
 ## OAuth XAuth Flow
 Unfortunately, TwitterKit doesn't yet support an XAuth authentication flow. This library came out of the needs of my [own apps](http://highorderbit.com), and since they all require direct message access, which is not permitted with XAuth, TwitterKit doesn't provide support for it. This might come in the future (I really mean that!), or, if you want to help out, please do!
 
-# COMMUNICATING WITH THE REST API
+# Communicating with the REST API
 The `TKTwitterRequest` class creates, authorizes, and sends requests to the Twitter REST API. If you want to manage the connection to Twitter yourself, it can provide you an `NSURLConnection` instance that's initialized, configured, and ready to send.
 
 ## Providing Your Application's Consumer Key and Secret
@@ -187,19 +187,19 @@ NSURLRequest *urlRequest = [request unsignedRequest];
 [NSURLConnection connectionWithRequest:urlRequest delegate:self];
 ```
 
-# JSON AND XML PARSING
+# JSON and XML Parsing
 TwitterKit doesn't parse any XML or JSON itself. There are [tons](https://github.com/johnezang/JSONKit) [of](http://code.google.com/p/json-framework/) [great](https://github.com/TouchCode/TouchJSON) [libraries](https://github.com/gabriel/yajl-objc) [out](https://github.com/TouchCode/TouchXML) [there](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/Foundation/Classes/NSXMLParser_Class/Reference/Reference.html). You might want to use your favorite. Or you may want to use the latest and greatest super fast library that's going to be released in two weeks. Or you may need to use the proprietary XML library already used in your organization. Or you may want to distribute parsing of multiple simultaneous responses over GCD. Or you may want to implement parsing of the byte stream as it's downloaded from the network to improve performance.
 
 Since the requirements of any individual app can differ greatly from the next, and since two key goals of TwitterKit are to minimize code size and eliminate dependencies, data parsing has been left out.
 
-# CREDITS
+# Credits
 TwitterKit relies on components from other open source OAuth and Twitter libraries. Rather than include copies of those entire libraries, I extracted the small subsets that were actually used. In those cases, the names of the classes and methods have been changed to avoid any conflicts with code you may already be using. This helps to avoid not only name conflicts, but also version conflicts (what if you're using a newer version of some library that TwitterKit relies on?).
 
 * [__OAuth Consumer__](http://oauth.googlecode.com/svn/code/obj-c/) -- Linked from the [OAuth code page](http://oauth.net/code/). The SHA1 signing of requests is borrowed from this library.
 * [__PlainOAuth__](https://github.com/jaanus/PlainOAuth/) -- Much of the OAuth web flow support was inspired by this library. I did borrow some of the base crypto classes from here, though those classes are part of most Objective-C OAuth-related libraries I've encountered.
 
-# CONTRIBUTING
+# Contributing
 Any and all contributions in any form are welcome. Please feel free to [file a bug](******) if you find one, or (better!), fix the bug and submit a pull request. If you just think part of the design sucks and have a suggestion for improvement, that's great! Please get in touch.
 
-# LICENSE
+# License
 TwitterKit is made available under the MIT license. See the "LICENSE" file included in this project for more information. In cases where I've imported code from other libraries, I've left their original license agreement in place.
