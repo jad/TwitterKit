@@ -27,6 +27,7 @@
 		05408A191423EB280096B897 /* NSString+TKOAURLEncodingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 05408A131423EB280096B897 /* NSString+TKOAURLEncodingAdditions.m */; };
 		0562A85D1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0562A85B1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.h */; };
 		0562A85E1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0562A85C1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.m */; };
+		05B92152142ABD0000389A8F /* TwitterKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 05B92151142ABD0000389A8F /* TwitterKit.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		05408A131423EB280096B897 /* NSString+TKOAURLEncodingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+TKOAURLEncodingAdditions.m"; path = "shared/NSString+TKOAURLEncodingAdditions.m"; sourceTree = "<group>"; };
 		0562A85B1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKTwitterWebFlowAuthenticator.h; sourceTree = "<group>"; };
 		0562A85C1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKTwitterWebFlowAuthenticator.m; sourceTree = "<group>"; };
+		05B92151142ABD0000389A8F /* TwitterKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterKit.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,12 +96,13 @@
 		054089C91423EA800096B897 /* TwitterKit */ = {
 			isa = PBXGroup;
 			children = (
-				054089D81423EAB20096B897 /* TKRequestMethod.h */,
-				054089D91423EAB20096B897 /* TKRequestMethod.m */,
+				05B92151142ABD0000389A8F /* TwitterKit.h */,
 				054089DA1423EAB20096B897 /* TKTwitterRequest.h */,
 				054089DB1423EAB20096B897 /* TKTwitterRequest.m */,
 				0562A85B1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.h */,
 				0562A85C1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.m */,
+				054089D81423EAB20096B897 /* TKRequestMethod.h */,
+				054089D91423EAB20096B897 /* TKRequestMethod.m */,
 				054089E41423EAB70096B897 /* oauth */,
 				054089E51423EABE0096B897 /* shared */,
 				054089CA1423EA800096B897 /* Supporting Files */,
@@ -159,6 +162,7 @@
 				05408A161423EB280096B897 /* NSError+TKTwitterRequestHelpers.h in Headers */,
 				05408A181423EB280096B897 /* NSString+TKOAURLEncodingAdditions.h in Headers */,
 				0562A85D1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.h in Headers */,
+				05B92152142ABD0000389A8F /* TwitterKit.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
