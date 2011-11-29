@@ -165,7 +165,7 @@ TKTwitterRequest *request = [[TKTwitterRequest alloc] initWithURL:url
                                                     requestMethod:TKRequestMethodGET];
 NSURLRequest *urlRequest =
     [request signedRequestWithOAuthToken:@"<user's oauth token>"
-tokenSecret:@"<user's oauth token secret>"];
+                             tokenSecret:@"<user's oauth token secret>"];
 [NSURLConnection connectionWithRequest:urlRequest delegate:self];
 ```
 
