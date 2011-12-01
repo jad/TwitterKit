@@ -161,8 +161,9 @@ static NSMutableDictionary *classOAuthCredentials_ = nil;
                                               consumerSecret:consumerSecret
                                                        token:token
                                                  tokenSecret:tokenSecret];
+    NSString *requestMethodString = [NSString stringForRequestMethod:[self requestMethod]];
     NSString *header =
-        [sig authorizationRequestHeaderForMethod:[self requestMethod]
+        [sig authorizationRequestHeaderForMethod:requestMethodString
                                              url:[request URL]
                                       parameters:params];
     [request addValue:header forHTTPHeaderField:@"Authorization"];

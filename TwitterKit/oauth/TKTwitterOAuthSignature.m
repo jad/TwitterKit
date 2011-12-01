@@ -79,7 +79,7 @@ static NSString *OAUTH_VERSION = @"1.0";
 
 #pragma mark - Obtaining the authorization request header
 
-- (NSString *)authorizationRequestHeaderForMethod:(TKRequestMethod)requestMethod
+- (NSString *)authorizationRequestHeaderForMethod:(NSString *)requestMethod
                                               url:(NSURL *)url
                                        parameters:(NSDictionary *)parameters
 {
@@ -100,11 +100,9 @@ static NSString *OAUTH_VERSION = @"1.0";
         [NSString stringWithFormat:@"%@&%@",
          [self consumerSecret], [self tokenSecret]];
 
-    NSString *method = [NSString stringForRequestMethod:requestMethod];
-
 	// Given a signature base and secret key, calculate the signature.
     NSDictionary *components = [self oauthComponentsForParams:encodedParams];
-    NSString *clearText = [self oauthSignatureBase:method
+    NSString *clearText = [self oauthSignatureBase:requestMethod
                                            withUrl:url
                                 andOauthComponents:components];
 	NSString *signature = [sigProvider signClearText:clearText

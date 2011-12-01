@@ -22,7 +22,6 @@
 
 
 #import <Foundation/Foundation.h>
-#import "TKRequestMethod.h"
 
 @interface TKTwitterOAuthSignature : NSObject
 
@@ -41,7 +40,10 @@
 
 #pragma mark - Obtaining the authorization request header
 
-- (NSString *)authorizationRequestHeaderForMethod:(TKRequestMethod)requestMethod
+//
+// The 'requestMethod' parameter must be a valid HTTP request method, e.g. GET, POST, DELETE, etc.
+//
+- (NSString *)authorizationRequestHeaderForMethod:(NSString *)requestMethod
                                               url:(NSURL *)url
                                        parameters:(NSDictionary *)parameters;
 
