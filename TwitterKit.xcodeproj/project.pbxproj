@@ -8,27 +8,36 @@
 
 /* Begin PBXBuildFile section */
 		054089C81423EA800096B897 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 054089C71423EA800096B897 /* Foundation.framework */; };
-		054089DE1423EAB20096B897 /* TKRequestMethod.h in Headers */ = {isa = PBXBuildFile; fileRef = 054089D81423EAB20096B897 /* TKRequestMethod.h */; };
 		054089DF1423EAB20096B897 /* TKRequestMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 054089D91423EAB20096B897 /* TKRequestMethod.m */; };
-		054089E01423EAB20096B897 /* TKTwitterRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 054089DA1423EAB20096B897 /* TKTwitterRequest.h */; };
 		054089E11423EAB20096B897 /* TKTwitterRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 054089DB1423EAB20096B897 /* TKTwitterRequest.m */; };
 		054089FB1423EB0C0096B897 /* TKBase64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 054089F41423EB0C0096B897 /* TKBase64Transcoder.c */; };
-		054089FC1423EB0C0096B897 /* TKBase64Transcoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 054089F51423EB0C0096B897 /* TKBase64Transcoder.h */; };
-		054089FD1423EB0C0096B897 /* TKOAHMACSHA1SignatureProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 054089F61423EB0C0096B897 /* TKOAHMACSHA1SignatureProvider.h */; };
 		054089FE1423EB0C0096B897 /* TKOAHMACSHA1SignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 054089F71423EB0C0096B897 /* TKOAHMACSHA1SignatureProvider.m */; };
-		054089FF1423EB0C0096B897 /* TKOASignatureProviding.h in Headers */ = {isa = PBXBuildFile; fileRef = 054089F81423EB0C0096B897 /* TKOASignatureProviding.h */; };
-		05408A001423EB0C0096B897 /* TKTwitterOAuthSignature.h in Headers */ = {isa = PBXBuildFile; fileRef = 054089F91423EB0C0096B897 /* TKTwitterOAuthSignature.h */; };
 		05408A011423EB0C0096B897 /* TKTwitterOAuthSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 054089FA1423EB0C0096B897 /* TKTwitterOAuthSignature.m */; };
-		05408A141423EB280096B897 /* NSDictionary+TKTwitterRequestHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 05408A0E1423EB280096B897 /* NSDictionary+TKTwitterRequestHelpers.h */; };
 		05408A151423EB280096B897 /* NSDictionary+TKTwitterRequestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 05408A0F1423EB280096B897 /* NSDictionary+TKTwitterRequestHelpers.m */; };
-		05408A161423EB280096B897 /* NSError+TKTwitterRequestHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 05408A101423EB280096B897 /* NSError+TKTwitterRequestHelpers.h */; };
 		05408A171423EB280096B897 /* NSError+TKTwitterRequestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 05408A111423EB280096B897 /* NSError+TKTwitterRequestHelpers.m */; };
-		05408A181423EB280096B897 /* NSString+TKOAURLEncodingAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 05408A121423EB280096B897 /* NSString+TKOAURLEncodingAdditions.h */; };
 		05408A191423EB280096B897 /* NSString+TKOAURLEncodingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 05408A131423EB280096B897 /* NSString+TKOAURLEncodingAdditions.m */; };
-		0562A85D1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0562A85B1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.h */; };
 		0562A85E1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0562A85C1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.m */; };
-		05B92152142ABD0000389A8F /* TwitterKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 05B92151142ABD0000389A8F /* TwitterKit.h */; };
+		2477DA5F15E7896D0031FB55 /* TwitterKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 05B92151142ABD0000389A8F /* TwitterKit.h */; };
+		2477DA6015E789830031FB55 /* TKTwitterRequest.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 054089DA1423EAB20096B897 /* TKTwitterRequest.h */; };
+		2477DA6115E7898E0031FB55 /* TKTwitterWebFlowAuthenticator.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0562A85B1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.h */; };
+		2477DA6215E789920031FB55 /* TKRequestMethod.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 054089D81423EAB20096B897 /* TKRequestMethod.h */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2477DA5D15E789370031FB55 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${TARGET_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+				2477DA5F15E7896D0031FB55 /* TwitterKit.h in CopyFiles */,
+				2477DA6015E789830031FB55 /* TKTwitterRequest.h in CopyFiles */,
+				2477DA6215E789920031FB55 /* TKRequestMethod.h in CopyFiles */,
+				2477DA6115E7898E0031FB55 /* TKTwitterWebFlowAuthenticator.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		054089C41423EA800096B897 /* libTwitterKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTwitterKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,35 +156,14 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		054089C21423EA800096B897 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				054089DE1423EAB20096B897 /* TKRequestMethod.h in Headers */,
-				054089E01423EAB20096B897 /* TKTwitterRequest.h in Headers */,
-				054089FC1423EB0C0096B897 /* TKBase64Transcoder.h in Headers */,
-				054089FD1423EB0C0096B897 /* TKOAHMACSHA1SignatureProvider.h in Headers */,
-				054089FF1423EB0C0096B897 /* TKOASignatureProviding.h in Headers */,
-				05408A001423EB0C0096B897 /* TKTwitterOAuthSignature.h in Headers */,
-				05408A141423EB280096B897 /* NSDictionary+TKTwitterRequestHelpers.h in Headers */,
-				05408A161423EB280096B897 /* NSError+TKTwitterRequestHelpers.h in Headers */,
-				05408A181423EB280096B897 /* NSString+TKOAURLEncodingAdditions.h in Headers */,
-				0562A85D1425AE0900A6A9F2 /* TKTwitterWebFlowAuthenticator.h in Headers */,
-				05B92152142ABD0000389A8F /* TwitterKit.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
 		054089C31423EA800096B897 /* TwitterKit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 054089D11423EA800096B897 /* Build configuration list for PBXNativeTarget "TwitterKit" */;
 			buildPhases = (
+				2477DA5D15E789370031FB55 /* CopyFiles */,
 				054089C01423EA800096B897 /* Sources */,
 				054089C11423EA800096B897 /* Frameworks */,
-				054089C21423EA800096B897 /* Headers */,
 			);
 			buildRules = (
 			);
