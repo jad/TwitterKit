@@ -180,6 +180,7 @@
 		054089BB1423EA800096B897 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "High Order Bit";
 			};
 			buildConfigurationList = 054089BE1423EA800096B897 /* Build configuration list for PBXProject "TwitterKit" */;
@@ -265,6 +266,7 @@
 				DSTROOT = /tmp/TwitterKit.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TwitterKit/TwitterKit-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -277,6 +279,7 @@
 				DSTROOT = /tmp/TwitterKit.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TwitterKit/TwitterKit-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
