@@ -270,7 +270,7 @@ static NSString *OAUTH_VERSION = @"1.0";
 	NSMutableArray *chunks = [NSMutableArray array];
 
 	// First add all the base components.
-	[chunks addObject:[NSString stringWithString:@"OAuth realm=\"\""]];
+	[chunks addObject:@"OAuth realm=\"\""];
 
     for (NSString *part in components) {
         NSString *value = [components valueForKey:part];
