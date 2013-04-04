@@ -267,27 +267,27 @@ static NSString *OAUTH_VERSION = @"1.0";
 - (NSString *)oauthAuthorizationHeader:(NSString *)oauthSignature
                    withOauthComponents:(NSDictionary *)components
 {
-	NSMutableArray *chunks = [NSMutableArray array];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:components];
+    NSMutableArray *chunks = [[[NSMutableArray alloc] init] autorelease];
 
-	// First add all the base components.
-	[chunks addObject:@"OAuth realm=\"\""];
-
-    for (NSString *part in components) {
-        NSString *value = [components valueForKey:part];
-        NSString *s =
-            [NSString stringWithFormat:@"%@=\"%@\"", part,
-             /*[*/value /*encodedURLParameterString]*/];
-        [chunks addObject:s];
+    // First add all the base components.
+    [chunks addObject:@"OAuth realm=\"\""];
+    NSArray *baseComponents = [[self class] baseComponents];
+    for (NSString *part in baseComponents) {
+        NSString *value =[NSString stringWithFormat:@"%@=\"%@\"", part, [[params valueForKey:part] tk_encodedURLParameterString]];
+        [chunks addObject:value];
+        [params removeObjectForKey:part];
     }
 
-	// Signature will be the last component of our header.
-    NSString *signature =
-        [NSString stringWithFormat:@"%@=\"%@\"", @"oauth_signature",
-         [oauthSignature tk_encodedURLParameterString]];
-	[chunks addObject:signature];
+	// add remaining parameter values if any.
+    if ([params count])
+        for (NSString *key in [[params allKeys] sortedArrayUsingSelector:@selector(compare:)])
+            [chunks addObject:[NSString stringWithFormat:@"%@=\"%@\"", key, [params objectForKey:key]]];
 
-	return [NSString stringWithFormat:@"%@",
-            [chunks componentsJoinedByString:@", "]];
+    // Signature will be the last component of our header.
+    [chunks addObject:[NSString stringWithFormat:@"%@=\"%@\"", @"oauth_signature", [oauthSignature tk_encodedURLParameterString]]];
+
+    return [NSString stringWithFormat:@"%@", [chunks componentsJoinedByString:@", "]];
 }
 
 
@@ -344,6 +344,18 @@ static NSString *OAUTH_VERSION = @"1.0";
             completion(response, data, error);
         });
     });
+}
+
+#pragma mark - Static helpers
+
++ (NSArray *)baseComponents
+{
+    return [NSArray arrayWithObjects:@"oauth_timestamp",
+                                     @"oauth_nonce",
+                                     @"oauth_signature_method",
+                                     @"oauth_consumer_key",
+                                     @"oauth_version",
+                                     nil];
 }
 
 @end
