@@ -66,7 +66,7 @@ Next you need to fetch the access token that you'll use as part of the URL to wh
         }
     }];
 ```
-The `authorizationURLForQueryString:` class method includes the `force_login` parameter, but that's not required. See [Twitter's documentation](https://dev.twitter.com/docs/api/1/get/oauth/authenticate) for more information on allowed parameters.
+The `+authorizationURLForQueryString:` class method includes the `force_login` parameter, but that's not required. See [Twitter's documentation](https://dev.twitter.com/docs/api/1/get/oauth/authenticate) for more information on allowed parameters.
 
 Once the user has provided her credentials to Twitter and granted permission to your app, Twitter will redirect to your callback URL with some query parameters attached. From those parameters you need to obtain the OAuth token and verifier (straightforward, but left as an exercise to the reader). As the last step, send those to Twitter to receive the user's OAuth credentials:
 
