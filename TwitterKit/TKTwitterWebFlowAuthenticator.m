@@ -206,6 +206,13 @@ static NSString *OAUTH_VERSION = @"1.0";
     return [NSURL URLWithString:urlString];
 }
 
++ (NSURL *)authorizationURLForQueryString:(NSString *)queryString
+{
+    NSString *urlString =
+        [NSString stringWithFormat: @"https://api.twitter.com/oauth/authorize?%@&force_login=true", queryString];
+    return [NSURL URLWithString:urlString];
+}
+
 + (NSURL *)twitterAuthorizationURL
 {
     return [NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"];

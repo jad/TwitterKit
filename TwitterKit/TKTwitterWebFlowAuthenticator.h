@@ -51,6 +51,12 @@ typedef void(^TKCredentialsCompletion)(NSDictionary *creds, NSError *error);
 + (NSURL *)twitterTokenURL;
 + (NSURL *)authenticationURLForOAuthToken:(NSString *)token;
 
+//
+// Query string is provided in the completion handler to
+// -fetchTwitterAccessTokenWithCallbackURL:completion:
+//
++ (NSURL *)authorizationURLForQueryString:(NSString *)queryString;
+
 + (NSURL *)twitterAuthorizationURL;
 
 @end

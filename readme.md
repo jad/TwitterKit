@@ -58,14 +58,12 @@ Next you need to fetch the access token that you'll use as part of the URL to wh
 [authenticator fetchTwitterAccessTokenWithCallbackURL:url
                                      completion:
     ^(NSString *urlQueryString, NSError *error) {
-        NSString *urlString =
-            [NSString stringWithFormat:
-             @"https://api.twitter.com/oauth/authorize?"
-              "%@&force_login=true", urlQueryString];
-
-        // send the user to the URL in Safari
-        NSURL *tokenURL = [NSURL URLWithString:urlString];
-        [[UIApplication sharedApplication] openURL:tokenURL];
+        if (urlQueryString) {
+            // send the user to the URL in Safari
+            NSURL *tokenURL = 
+                [[authenticator class] authorizationURLForQueryString:urlQueryString];
+            [[UIApplication sharedApplication] openURL:tokenURL];
+        }
     }];
 ```
 Here I've also included the `force_login` parameter, but that's not required. See [Twitter's documentation](https://dev.twitter.com/docs/api/1/get/oauth/authenticate) for more information on allowed parameters.
