@@ -113,12 +113,15 @@ static NSString *OAUTH_VERSION = @"1.0";
              token = [[[NSString alloc] initWithData:data
                                             encoding:NSUTF8StringEncoding]
                       autorelease];
-         else
-             // jad: Parameters weren't in the response, so just throw
-             // up a Twitter error. I'm fixing this bug because I first
-             // saw it when getting over capacity messages, so that's
-             // the message I'm putting here, whether or not it's actually true.
-             error = [NSError tk_twitterOvercapacityError];
+         else {
+             if (!error) {
+                 // jad: Parameters weren't in the response, so just throw
+                 // up a Twitter error. I'm fixing this bug because I first
+                 // saw it when getting over capacity messages, so that's
+                 // the message I'm putting here, whether or not it's actually true.
+                 error = [NSError tk_twitterOvercapacityError];
+             }
+         }
 
          completion(token, error);
      }];
@@ -166,12 +169,15 @@ static NSString *OAUTH_VERSION = @"1.0";
                      [values setObject:[vals objectAtIndex:1]
                                 forKey:[vals objectAtIndex:0]];
                  else {
-                     // jad: Parameters weren't in the response, so just throw
-                     // up a Twitter error. I'm fixing this bug because I first
-                     // saw it when getting over capacity messages, so that's
-                     // the message I'm putting here, whether or not it's
-                     // actually true.
-                     error = [NSError tk_twitterOvercapacityError];
+                     if (!error) {
+                         // jad: Parameters weren't in the response, so just throw
+                         // up a Twitter error. I'm fixing this bug because I first
+                         // saw it when getting over capacity messages, so that's
+                         // the message I'm putting here, whether or not it's
+                         // actually true.
+                         error = [NSError tk_twitterOvercapacityError];
+                     }
+
                      break;
                  }
              }
