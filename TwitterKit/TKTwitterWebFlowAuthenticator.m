@@ -374,3 +374,37 @@ static NSString *OAUTH_VERSION = @"1.0";
 }
 
 @end
+
+
+@implementation TKTwitterWebFlowAuthenticator (URLParsingHelpers)
+
+#pragma mark - OAuth web flow helpers
+
++ (NSString *)tokenFromAuthorizationResponseURL:(NSURL *)url
+{
+    return [self valueForKey:@"oauth_token" fromAuthorizationResponseURL:url];
+}
+
++ (NSString *)verifierFromAuthorizationResponseURL:(NSURL *)url
+{
+    return [self valueForKey:@"oauth_verifier" fromAuthorizationResponseURL:url];
+}
+
++ (NSString *)valueForKey:(NSString *)key fromAuthorizationResponseURL:(NSURL *)url
+{
+    NSArray *params = [[url query] componentsSeparatedByString:@"&"];
+    NSString *token = nil;
+    for (NSString *param in params) {
+        NSArray *parts = [param componentsSeparatedByString:@"="];
+        if ([parts count] == 2) {
+            if ([[parts objectAtIndex:0] isEqualToString:key]) {
+                token = [parts objectAtIndex:1];
+                break;
+            }
+        }
+    }
+
+    return token;
+}
+
+@end

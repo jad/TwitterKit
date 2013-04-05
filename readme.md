@@ -68,9 +68,11 @@ Next you need to fetch the access token that you'll use as part of the URL to wh
 ```
 The `+authorizationURLForQueryString:` class method includes the `force_login` parameter, but that's not required. See [Twitter's documentation](https://dev.twitter.com/docs/api/1/get/oauth/authenticate) for more information on allowed parameters.
 
-Once the user has provided her credentials to Twitter and granted permission to your app, Twitter will redirect to your callback URL with some query parameters attached. From those parameters you need to obtain the OAuth token and verifier (straightforward, but left as an exercise to the reader). As the last step, send those to Twitter to receive the user's OAuth credentials:
+Once the user has provided her credentials to Twitter and granted permission to your app, Twitter will redirect to your callback URL with some query parameters attached. This URL contains an OAuth token and verifier that must be extracted. TwitterKit has two `TKTwitterWebFlowAuthenticator` helper class methods to extract this information from the URL, as shown below. As the last step, send those to Twitter to receive the user's OAuth credentials:
 
 ```
+NSString *token = [TKTwitterWebFlowAuthenticator tokenFromAuthorizationResponseURL:requestURL];
+NSString *verifier = [TKTwitterWebFlowAuthenticator verifierFromAuthorizationResponseURL:requestURL];
 [authenticator authenticateTwitterToken:token
                            withVerifier:verifier
                              completion:

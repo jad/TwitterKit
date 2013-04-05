@@ -60,3 +60,16 @@ typedef void(^TKCredentialsCompletion)(NSDictionary *creds, NSError *error);
 + (NSURL *)twitterAuthorizationURL;
 
 @end
+
+
+@interface TKTwitterWebFlowAuthenticator (URLParsingHelpers)
+
+//
+// These helpers can extract the token and verifier from the callback URL called
+// from Twitter's web-based login page loaded with the response from
+// -fetchTwitterAccessTokenWithCallbackURL:completion:
+//
++ (NSString *)tokenFromAuthorizationResponseURL:(NSURL *)url;
++ (NSString *)verifierFromAuthorizationResponseURL:(NSURL *)url;
+
+@end
