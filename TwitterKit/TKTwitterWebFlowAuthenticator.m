@@ -91,17 +91,18 @@ static NSString *OAUTH_VERSION = @"1.0";
                                     completion:(TKTokenCompletion)completion
 {
     NSURL *url = [[self class] twitterTokenURL];
+    NSString *requestMethod = @"POST";
     NSDictionary *params =
         [NSDictionary dictionaryWithObject:[callbackURL absoluteString]
                                     forKey:@"oauth_callback"];
 	NSString *oauthHeader =
-        [self oauthHeaderForMethod:@"POST"
+        [self oauthHeaderForMethod:requestMethod
                             andUrl:[url absoluteString]
                          andParams:params
                     andTokenSecret:@""];
 
     NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
-    [req setHTTPMethod:@"POST"];
+    [req setHTTPMethod:requestMethod];
     [req addValue:oauthHeader forHTTPHeaderField:@"Authorization"];
 
     [self performRequest:req
@@ -134,6 +135,7 @@ static NSString *OAUTH_VERSION = @"1.0";
                       completion:(TKCredentialsCompletion)credentialsCompletion
 {
     NSURL *url = [[self class] twitterAuthorizationURL];
+    NSString *requestMethod = @"POST";
 
 	// We manually specify the token as a param, because it has not yet been
     // authorized and the automatic state checking wouldn't include it in
@@ -143,13 +145,13 @@ static NSString *OAUTH_VERSION = @"1.0";
         [NSDictionary dictionaryWithObjectsAndKeys:
          token, @"oauth_token", verifier, @"oauth_verifier", nil];
 
-    NSString *header = [self oauthHeaderForMethod:@"POST"
+    NSString *header = [self oauthHeaderForMethod:requestMethod
                                            andUrl:[url absoluteString]
                                         andParams:params
                                    andTokenSecret:[self consumerSecret]];
 
     NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
-    [req setHTTPMethod:@"POST"];
+    [req setHTTPMethod:requestMethod];
     [req addValue:header forHTTPHeaderField:@"Authorization"];
 
     [self performRequest:req completion:
