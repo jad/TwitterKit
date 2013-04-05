@@ -73,10 +73,7 @@ Once the user has provided her credentials to Twitter and granted permission to 
 ```
 NSString *token = [TKTwitterWebFlowAuthenticator tokenFromAuthorizationResponseURL:requestURL];
 NSString *verifier = [TKTwitterWebFlowAuthenticator verifierFromAuthorizationResponseURL:requestURL];
-[authenticator authenticateTwitterToken:token
-                           withVerifier:verifier
-                             completion:
-    ^(NSDictionary *credentials, NSError *error) {
+[authenticator authenticateTwitterToken:token withVerifier:verifier completion:^(NSDictionary *credentials, NSError *error) {
         NSLog(@"Credentials: %@", credentials);]
     }]; 
 ```
